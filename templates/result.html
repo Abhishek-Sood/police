@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results - CyberShield</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}" />
+</head>
+<body>
+    <div class="result-container">
+        <div class="result-header">
+            <h1>Quiz Results</h1>
+            <div class="score-summary">
+                <div class="score-card">
+                    <div class="score-circle">
+                        <span id="scorePercentage">0%</span>
+                    </div>
+                    <h2>Your Score</h2>
+                    <p><span id="correctCount">0</span> out of <span id="totalQuestions">0</span> correct</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-breakdown">
+            <h2>Question Breakdown</h2>
+            <div class="questions-list" id="questionsList"></div>
+        </div>
+
+        <div class="result-actions">
+            <a class="btn btn-primary" href="{{ url_for('dashboard') }}" style="text-decoration: none;">
+                <i class="fas fa-home"></i> Return to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/result.js') }}"></script>
+</body>
+</html>

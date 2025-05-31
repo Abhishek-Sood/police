@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 11 - Ransomware Simulation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/simulation.css') }}" />
+</head>
+<body>
+    <!-- Login Screen -->
+    <!-- <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <img src="assets/user-avatar.png" alt="User" class="user-avatar">
+            <h2>Welcome</h2>
+            <input type="password" id="password" placeholder="Enter password" class="password-input">
+            <button onclick="login()" class="login-btn">Sign in</button>
+        </div>
+    </div> -->
+
+    <!-- Desktop Screen -->
+    <div class="desktop-screen" id="desktopScreen">
+        <!-- Desktop Icons -->
+        <div class="desktop-icons">
+            <div class="icon" onclick="openApp('mypc')">
+                <img src="{{ url_for('static', filename='assets/mypc.png') }}" alt="My PC">
+                <span>My PC</span>
+            </div>
+            <div class="icon" onclick="WindowManager.createWindow('gmail')">
+                <img src="{{ url_for('static', filename='assets/gmail.png') }}" alt="Gmail">
+                <span>Gmail</span>
+            </div>
+            <div class="icon" onclick="openWebSearch()">
+                <img src="{{ url_for('static', filename='assets/chrome.png') }}" alt="Chrome">
+                <span>Chrome</span>
+            </div>
+            <div class="icon" onclick="openApp('notepad')">
+                <img src="{{ url_for('static', filename='assets/notepad.png') }}" alt="Notepad">
+                <span>Notepad</span>
+            </div>
+            <div class="icon" onclick="openApp('calculator')">
+                <img src="{{ url_for('static', filename='assets/calculator.png') }}" alt="Calculator">
+                <span>Calculator</span>
+            </div>
+            <div class="icon" id="updateIcon" style="display: none;" onclick="changeWallpaper('wallpaper2.png')">
+                <img src="{{ url_for('static', filename='assets/windows.png') }}" alt="Update">
+                <span>Security Update</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="ransomware-screen" id="ransomwareScreen" style="display: none;">
+            <div class="ransomware-content">
+                <h1>🔒 Your files have been encrypted!</h1>
+                <p>All your documents, photos, and important files have been encrypted with military-grade encryption.</p>
+                <div class="ransom-details">
+                    <p>To decrypt your files, you must pay:</p>
+                    <h2>$500 in Bitcoin</h2>
+                    <p>Send payment to:</p>
+                    <code>bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</code>
+                    <p class="warning">Warning: If payment is not made within 48 hours, the price will double.</p>
+                </div>
+                <div class="timer">
+                    Time remaining: <span id="countdown">47:59:59</span>
+                </div>
+            </div>
+    </div>  
+
+
+    <div class="taskbar">
+        <!-- <button class="open-window-btn" onclick="WindowManager.createWindow()">
+            Open New Window
+        </button> -->
+        <div class="taskbar-windows" id="taskbarWindows"></div>
+
+        <!-- <div class="start-menu-btn">
+            <img src="assets/windows.png" alt="Start">
+        </div> -->
+        <div class="taskbar-icons">
+            <img src="{{ url_for('static', filename='assets/mypc.png') }}" alt="My PC">
+            <img src="{{ url_for('static', filename='assets/gmail.png') }}" alt="Gmail"  onclick="WindowManager.createWindow('gmail')">
+            <img src="{{ url_for('static', filename='assets/chrome.png') }}" alt="Chrome">
+            <img src="{{ url_for('static', filename='assets/notepad.png') }}" alt="Notepad">
+            <img src="{{ url_for('static', filename='assets/calculator.png') }}" alt="Calculator">
+        </div>
+        <!-- Add this div for window taskbar items -->
+        <!-- <div id="taskbarWindows"></div>
+        <div class="taskbar-right">
+            <span class="wifi-icon">📶</span>
+            <span class="volume-icon">🔊</span>
+            <span class="battery-icon">🔋</span>
+            <span class="language">ENG</span>
+            <span id="clock">10:04</span>
+            <span id="date">22-05-2025</span>
+        </div> -->
+    </div>
+
+
+
+
+
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+        
+        class WindowManager {
+            static windowCount = 0;
+            static activeWindow = null;
+            static windows = new Map();
+
+            static async createWindow(appName = 'default') {
+        const windowId = ++this.windowCount;
+        const windowElement = await this.createWindowElement(windowId, appName);
+        
+        document.body.appendChild(windowElement);
+        this.windows.set(windowId, {
+            element: windowElement,
+            isMinimized: false,
+            isMaximized: false,
+            originalPosition: { x: 0, y: 0, width: 0, height: 0 },
+            appName: appName
+        });
+
+        this.makeWindowDraggable(windowElement);
+        this.makeWindowResizable(windowElement);
+        this.positionWindow(windowElement, windowId);
+        this.setActiveWindow(windowElement);
+        this.createTaskbarItem(windowId, appName);
+
+        return windowElement;
+    }
+
+    static async createWindowElement(windowId, appName) {
+        const window = document.createElement('div');
+        window.className = 'window';
+        window.id = `window-${windowId}`;
+        
+        const content = await this.loadAppContent(appName);
+        const appTitle = this.getAppTitle(appName);
+        
+        window.innerHTML = `
+            <div class="window-header">
+                <div class="window-title">${appTitle}</div>
+                <div class="window-controls">
+                    <button class="control-btn minimize-btn" onclick="WindowManager.minimizeWindow(${windowId})">−</button>
+                    <button class="control-btn maximize-btn" onclick="WindowManager.toggleMaximize(${windowId})">□</button>
+                    <button class="control-btn close-btn" onclick="WindowManager.closeWindow(${windowId})">×</button>
+                </div>
+            </div>
+            <div class="window-content">
+                ${content}
+            </div>
+            <div class="resize-handle nw"></div>
+            <div class="resize-handle n"></div>
+            <div class="resize-handle ne"></div>
+            <div class="resize-handle w"></div>
+            <div class="resize-handle e"></div>
+            <div class="resize-handle sw"></div>
+            <div class="resize-handle s"></div>
+            <div class="resize-handle se"></div>
+        `;
+
+        window.addEventListener('mousedown', () => this.setActiveWindow(window));
+        
+        return window;
+    }
+
+    static async loadAppContent(appName) {
+        try {
+            // "{{ url_for('static', filename='assets/calculator.png') }}"
+            // const response = await fetch(`assets/${appName}.html`);
+            const response = await fetch(`/static/assets/${appName}.html`);
+            if (response.ok) {
+                return await response.text();
+            } else {
+                return this.getDefaultContent(appName);
+            }
+        } catch (error) {
+            console.error(`Failed to load ${appName}.html:`, error);
+            return this.getDefaultContent(appName);
+        }
+    }
+
+    static getAppTitle(appName) {
+        const titles = {
+            'gmail': 'Gmail',
+            'chrome': 'Google Chrome',
+            'notepad': 'Notepad',
+            'calculator': 'Calculator',
+            'mypc': 'My PC',
+            'default': 'Application'
+        };
+        return titles[appName] || titles['default'];
+    }
+
+    static getDefaultContent(appName) {
+        return `
+            <div class="sample-content">
+                <h2>${this.getAppTitle(appName)}</h2>
+                <p>Unable to load ${appName}.html file. Please make sure the file exists in the assets folder.</p>
+                <p>This is the fallback content for ${appName}.</p>
+            </div>
+        `;
+    }
+    
+            static generateSampleContent(windowId) {
+                const contents = [
+                    `<div class="sample-content">
+                        <h2>Welcome to Window ${windowId}</h2>
+                        <p>This is a fully functional window with its own content and styling. Each window operates independently with drag, resize, minimize, maximize, and close functionality.</p>
+                        <p>You can interact with multiple windows simultaneously, and each maintains its own state and content.</p>
+                        <div class="sample-form">
+                            <h3>Sample Form</h3>
+                            <div class="form-group">
+                                <label>Name:</label>
+                                <input type="text" placeholder="Enter your name">
+                            </div>
+                            <div class="form-group">
+                                <label>Message:</label>
+                                <textarea rows="4" placeholder="Enter your message"></textarea>
+                            </div>
+                            <button class="submit-btn" onclick="alert('Form submitted from Window ${windowId}!')">Submit</button>
+                        </div>
+                    </div>`
+                ];
+                
+                return contents[0];
+            }
+
+            static positionWindow(windowElement, windowId) {
+                const offset = (windowId - 1) * 30;
+                windowElement.style.left = `${100 + offset}px`;
+                windowElement.style.top = `${50 + offset}px`;
+                windowElement.style.width = '500px';
+                windowElement.style.height = '400px';
+            }
+
+            static makeWindowDraggable(windowElement) {
+                const header = windowElement.querySelector('.window-header');
+                let isDragging = false;
+                let dragOffsetX = 0;
+                let dragOffsetY = 0;
+
+                const startDrag = (e) => {
+                    if (e.target.classList.contains('control-btn')) return;
+                    
+                    isDragging = true;
+                    const rect = windowElement.getBoundingClientRect();
+                    dragOffsetX = e.clientX - rect.left;
+                    dragOffsetY = e.clientY - rect.top;
+                    
+                    header.style.cursor = 'grabbing';
+                    windowElement.style.userSelect = 'none';
+                    windowElement.style.pointerEvents = 'none';
+                    document.body.style.userSelect = 'none';
+                    
+                    e.preventDefault();
+                };
+
+                const doDrag = (e) => {
+                    if (!isDragging) return;
+                    
+                    requestAnimationFrame(() => {
+                        const newX = e.clientX - dragOffsetX;
+                        const newY = Math.max(0, e.clientY - dragOffsetY);
+                        
+                        windowElement.style.transform = `translate(${newX}px, ${newY}px)`;
+                    });
+                };
+
+                const endDrag = () => {
+                    if (!isDragging) return;
+                    
+                    isDragging = false;
+                    header.style.cursor = 'move';
+                    windowElement.style.userSelect = '';
+                    windowElement.style.pointerEvents = '';
+                    document.body.style.userSelect = '';
+                    
+                    // Convert transform to position for consistency
+                    const transform = windowElement.style.transform;
+                    if (transform) {
+                        const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+                        if (match) {
+                            windowElement.style.left = match[1];
+                            windowElement.style.top = match[2];
+                            windowElement.style.transform = '';
+                        }
+                    }
+                };
+
+                header.addEventListener('mousedown', startDrag);
+                document.addEventListener('mousemove', doDrag);
+                document.addEventListener('mouseup', endDrag);
+            }
+
+            static makeWindowResizable(windowElement) {
+                const handles = windowElement.querySelectorAll('.resize-handle');
+                
+                handles.forEach(handle => {
+                    let isResizing = false;
+                    let startX, startY, startWidth, startHeight, startLeft, startTop;
+
+                    const startResize = (e) => {
+                        isResizing = true;
+                        startX = e.clientX;
+                        startY = e.clientY;
+                        
+                        const rect = windowElement.getBoundingClientRect();
+                        startWidth = rect.width;
+                        startHeight = rect.height;
+                        startLeft = rect.left;
+                        startTop = rect.top;
+                        
+                        document.body.style.cursor = handle.style.cursor;
+                        document.body.style.userSelect = 'none';
+                        windowElement.style.userSelect = 'none';
+                        
+                        e.preventDefault();
+                        e.stopPropagation();
+                    };
+
+                    const doResize = (e) => {
+                        if (!isResizing) return;
+
+                        requestAnimationFrame(() => {
+                            const deltaX = e.clientX - startX;
+                            const deltaY = e.clientY - startY;
+
+                            if (handle.classList.contains('se')) {
+                                const newWidth = Math.max(400, startWidth + deltaX);
+                                const newHeight = Math.max(300, startHeight + deltaY);
+                                windowElement.style.width = `${newWidth}px`;
+                                windowElement.style.height = `${newHeight}px`;
+                            } else if (handle.classList.contains('s')) {
+                                const newHeight = Math.max(300, startHeight + deltaY);
+                                windowElement.style.height = `${newHeight}px`;
+                            } else if (handle.classList.contains('e')) {
+                                const newWidth = Math.max(400, startWidth + deltaX);
+                                windowElement.style.width = `${newWidth}px`;
+                            } else if (handle.classList.contains('n')) {
+                                const newHeight = Math.max(300, startHeight - deltaY);
+                                const newTop = startTop + (startHeight - newHeight);
+                                windowElement.style.height = `${newHeight}px`;
+                                windowElement.style.top = `${newTop}px`;
+                            } else if (handle.classList.contains('w')) {
+                                const newWidth = Math.max(400, startWidth - deltaX);
+                                const newLeft = startLeft + (startWidth - newWidth);
+                                windowElement.style.width = `${newWidth}px`;
+                                windowElement.style.left = `${newLeft}px`;
+                            } else if (handle.classList.contains('nw')) {
+                                const newWidth = Math.max(400, startWidth - deltaX);
+                                const newHeight = Math.max(300, startHeight - deltaY);
+                                const newLeft = startLeft + (startWidth - newWidth);
+                                const newTop = startTop + (startHeight - newHeight);
+                                windowElement.style.width = `${newWidth}px`;
+                                windowElement.style.height = `${newHeight}px`;
+                                windowElement.style.left = `${newLeft}px`;
+                                windowElement.style.top = `${newTop}px`;
+                            } else if (handle.classList.contains('ne')) {
+                                const newWidth = Math.max(400, startWidth + deltaX);
+                                const newHeight = Math.max(300, startHeight - deltaY);
+                                const newTop = startTop + (startHeight - newHeight);
+                                windowElement.style.width = `${newWidth}px`;
+                                windowElement.style.height = `${newHeight}px`;
+                                windowElement.style.top = `${newTop}px`;
+                            } else if (handle.classList.contains('sw')) {
+                                const newWidth = Math.max(400, startWidth - deltaX);
+                                const newHeight = Math.max(300, startHeight + deltaY);
+                                const newLeft = startLeft + (startWidth - newWidth);
+                                windowElement.style.width = `${newWidth}px`;
+                                windowElement.style.height = `${newHeight}px`;
+                                windowElement.style.left = `${newLeft}px`;
+                            }
+                        });
+                    };
+
+                    const endResize = () => {
+                        if (!isResizing) return;
+                        
+                        isResizing = false;
+                        document.body.style.cursor = '';
+                        document.body.style.userSelect = '';
+                        windowElement.style.userSelect = '';
+                    };
+
+                    handle.addEventListener('mousedown', startResize);
+                    document.addEventListener('mousemove', doResize);
+                    document.addEventListener('mouseup', endResize);
+                });
+            }
+
+            static minimizeWindow(windowId) {
+                const windowData = this.windows.get(windowId);
+                if (!windowData || windowData.isMinimized) return;
+
+                const windowElement = windowData.element;
+                windowElement.classList.add('minimizing');
+                windowData.isMinimized = true;
+
+                setTimeout(() => {
+                    windowElement.style.display = 'none';
+                    windowElement.classList.remove('minimizing');
+                    this.updateTaskbarItem(windowId, true);
+                }, 400);
+            }
+
+            static restoreWindow(windowId) {
+                const windowData = this.windows.get(windowId);
+                if (!windowData || !windowData.isMinimized) return;
+
+                const windowElement = windowData.element;
+                windowElement.style.display = 'block';
+                windowElement.classList.add('restoring');
+                windowData.isMinimized = false;
+
+                setTimeout(() => {
+                    windowElement.classList.remove('restoring');
+                    this.setActiveWindow(windowElement);
+                    this.updateTaskbarItem(windowId, false);
+                }, 400);
+            }
+
+            static toggleMaximize(windowId) {
+                const windowData = this.windows.get(windowId);
+                if (!windowData) return;
+
+                const windowElement = windowData.element;
+                
+                if (windowData.isMaximized) {
+                    // Restore
+                    windowElement.classList.remove('maximized');
+                    const pos = windowData.originalPosition;
+                    windowElement.style.left = `${pos.x}px`;
+                    windowElement.style.top = `${pos.y}px`;
+                    windowElement.style.width = `${pos.width}px`;
+                    windowElement.style.height = `${pos.height}px`;
+                    windowData.isMaximized = false;
+                } else {
+                    // Maximize
+                    windowData.originalPosition = {
+                        x: parseInt(windowElement.style.left),
+                        y: parseInt(windowElement.style.top),
+                        width: parseInt(windowElement.style.width),
+                        height: parseInt(windowElement.style.height)
+                    };
+                    windowElement.classList.add('maximized');
+                    windowData.isMaximized = true;
+                }
+            }
+
+            static closeWindow(windowId) {
+                const windowData = this.windows.get(windowId);
+                if (!windowData) return;
+
+                windowData.element.remove();
+                this.windows.delete(windowId);
+                this.removeTaskbarItem(windowId);
+            }
+
+            static setActiveWindow(windowElement) {
+                // Remove active class from all windows
+                document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+                // Add active class to current window
+                windowElement.classList.add('active');
+                this.activeWindow = windowElement;
+            }
+
+            static createTaskbarItem(windowId, appName) {
+            const taskbarWindows = document.getElementById('taskbarWindows');
+            const taskbarItem = document.createElement('div');
+            taskbarItem.className = 'taskbar-item';
+            taskbarItem.id = `taskbar-${windowId}`;
+            taskbarItem.textContent = this.getAppTitle(appName);
+            taskbarItem.onclick = () => {
+                const windowData = this.windows.get(windowId);
+                if (windowData.isMinimized) {
+                    this.restoreWindow(windowId);
+                } else {
+                    this.setActiveWindow(windowData.element);
+                }
+            };
+            taskbarWindows.appendChild(taskbarItem);
+        }
+
+            static updateTaskbarItem(windowId, isMinimized) {
+                const taskbarItem = document.getElementById(`taskbar-${windowId}`);
+                if (taskbarItem) {
+                    taskbarItem.classList.toggle('minimized', isMinimized);
+                }
+            }
+
+            static removeTaskbarItem(windowId) {
+                const taskbarItem = document.getElementById(`taskbar-${windowId}`);
+                if (taskbarItem) {
+                    taskbarItem.remove();
+                }
+            }
+        }
+
+        // Initialize the system
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Desktop Windowing System Initialized');
+        });
+    </script>
+    <script>
+        // Update clock and date
+// function updateDateTime() {
+//     const now = new Date();
+    
+//     // Update time
+//     const hours = now.getHours().toString().padStart(2, '0');
+//     const minutes = now.getMinutes().toString().padStart(2, '0');
+//     document.getElementById('clock').textContent = `${hours}:${minutes}`;
+    
+//     // Update date
+//     const day = now.getDate().toString().padStart(2, '0');
+//     const month = (now.getMonth() + 1).toString().padStart(2, '0');
+//     const year = now.getFullYear();
+//     document.getElementById('date').textContent = `${day}-${month}-${year}`;
+// }
+
+// Update date and time every second
+// setInterval(updateDateTime, 1000);
+
+// // Initial update
+// document.addEventListener('DOMContentLoaded', updateDateTime);
+
+// Login functionality
+function login() {
+    const password = document.getElementById('password').value;
+    if (password.length > 0) { // Any password works for demo
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('desktopScreen').style.display = 'block';
+    }
+}
+
+// App management
+function openApp(appName) {
+    if (appName === 'gmail') {
+        document.getElementById('gmailWindow').style.display = 'block';
+    }
+}
+
+function closeApp(appName) {
+    if (appName === 'gmail') {
+        document.getElementById('gmailWindow').style.display = 'none';
+    }
+}
+
+// Ransomware trigger
+function openRansomware() {
+    document.getElementById('gmailWindow').style.display = 'none';
+    document.getElementById('ransomwareScreen').style.display = 'flex';
+    const screen = document.getElementById('ransomwareScreen');
+    if (screen) {
+        screen.style.display = 'flex';
+    }
+    startCountdown();
+}
+
+// Countdown timer
+function startCountdown() {
+    let hours = 47;
+    let minutes = 59;
+    let seconds = 59;
+    
+    const countdownElement = document.getElementById('countdown');
+    
+    const timer = setInterval(() => {
+        if (seconds > 0) {
+            seconds--;
+        } else if (minutes > 0) {
+            minutes--;
+            seconds = 59;
+        } else if (hours > 0) {
+            hours--;
+            minutes = 59;
+            seconds = 59;
+        } else {
+            clearInterval(timer);
+        }
+        
+        countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+// Prevent right-click context menu
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// Prevent common keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    if (
+        (e.ctrlKey && e.key === 'r') || // Ctrl+R
+        (e.ctrlKey && e.key === 'w') || // Ctrl+W
+        (e.altKey && e.key === 'F4') || // Alt+F4
+        e.key === 'F5' || // F5
+        e.key === 'Escape' // Escape
+    ) {
+        e.preventDefault();
+    }
+});
+
+// Download simulation
+function startDownload() {
+    const downloadProgress = document.getElementById('downloadProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const installBtn = document.querySelector('.install-btn');
+    
+    downloadProgress.style.display = 'block';
+    installBtn.disabled = true;
+    
+    let progress = 0;
+    const downloadTimer = setInterval(() => {
+        progress += 1;
+        progressBar.style.width = `${progress}%`;
+        progressText.textContent = `Downloading... ${progress}%`;
+        
+        if (progress >= 100) {
+            clearInterval(downloadTimer);
+            progressText.textContent = 'Download Complete!';
+            setTimeout(() => {
+                // Show the update icon
+                document.getElementById('updateIcon').style.display = 'block';
+                // Close the Gmail window
+                closeApp('gmail');
+            }, 1000);
+        }
+    }, 50); // Adjust speed of download simulation here
+}
+
+
+function openWebSearch() {
+    window.open('https://www.google.com', '_blank');
+}
+
+
+function showEmailContent(emailId) {
+    document.getElementById('emailList').classList.add('hidden');
+    document.getElementById('emailContent').classList.remove('hidden');
+}
+
+function showEmailList() {
+    document.getElementById('emailList').classList.remove('hidden');
+    document.getElementById('emailContent').classList.add('hidden');
+}
+
+function showCompose() {
+    // Implement compose functionality if needed
+    console.log('Compose clicked');
+}
+function changeWallpaper(newImageFileName) {
+    document.body.innerHTML = "";
+    document.body.style.backgroundImage = `url("/static/assets/${newImageFileName}")`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.overflow = "hidden";
+    document.body.style.margin = "0";
+    document.body.style.padding = "0";
+    document.body.style.height = "100vh";
+    document.body.style.width = "100vw";
+}
+
+    </script>
+</body>
+</html>

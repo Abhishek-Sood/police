@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Quiz - CyberShield</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}" />
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Cybersecurity Knowledge Assessment</h1>
+            <div class="quiz-meta">
+                <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                <span><i class="fas fa-clock"></i> 20 Minutes</span>
+                <span><i class="fas fa-trophy"></i> 80% to Pass</span>
+            </div>
+        </div>
+
+        <div class="quiz-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="quizProgress"></div>
+            </div>
+            <div class="progress-text" id="progressText">Question 1 of 15</div>
+        </div>
+
+        <div class="timer" id="timer">
+            <i class="fas fa-hourglass-half"></i>
+            <span>Time Remaining: 20:00</span>
+        </div>
+
+        <div class="question-card" id="questionCard">
+            <h2 id="questionText"></h2>
+            <div class="options-container" id="optionsContainer"></div>
+        </div>
+
+        <div class="quiz-controls">
+            <button class="btn btn-outline" id="prevBtn"><i class="fas fa-arrow-left"></i> Previous</button>
+            <button class="btn btn-primary" id="nextBtn">Next <i class="fas fa-arrow-right"></i></button>
+            <button class="btn btn-success hidden" id="submitBtn">Submit Quiz</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+</body>
+</html>

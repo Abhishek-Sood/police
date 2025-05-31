@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - Cybersecurity Training Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>CyberShield</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <a href="{{ url_for('dashboard') }}"><button class="btn btn-primary">Dashboard</button></a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-background">
+                <div class="cyber-grid"></div>
+                <div class="floating-elements">
+                    <div class="floating-icon" style="--delay: 0s"><i class="fas fa-lock"></i></div>
+                    <div class="floating-icon" style="--delay: 2s"><i class="fas fa-bug"></i></div>
+                    <div class="floating-icon" style="--delay: 4s"><i class="fas fa-shield-virus"></i></div>
+                    <div class="floating-icon" style="--delay: 6s"><i class="fas fa-user-secret"></i></div>
+                </div>
+            </div>
+            <div class="hero-content">
+                <h1 class="hero-title">Master Cybersecurity with <span class="gradient-text">CyberShield</span></h1>
+                <p class="hero-subtitle">Interactive training platform for ransomware awareness and cybersecurity education</p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('dashboard') }}" style="text-decoration: none;">
+                        <button class="btn btn-primary btn-large" onclick="showRegister()">
+                        <i class="fas fa-rocket"></i>
+                        Start Training
+                    </button>
+                    </a>
+                    <button class="btn btn-secondary btn-large" onclick="scrollToFeatures()">
+                        <i class="fas fa-play"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Users Trained</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Support</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Comprehensive Training Experience</h2>
+                    <p>Learn, practice, and master cybersecurity concepts through our interactive platform</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Interactive Learning</h3>
+                        <p>Comprehensive tutorials and educational content about ransomware and cybersecurity threats</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Knowledge Assessment</h3>
+                        <p>Test your understanding with interactive quizzes and real-world scenarios</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <h3>Live Simulation</h3>
+                        <p>Experience realistic ransomware attacks in a safe, controlled environment</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Progress Tracking</h3>
+                        <p>Monitor your learning progress and identify areas for improvement</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3>Certification</h3>
+                        <p>Earn certificates upon successful completion of training modules</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Expert Support</h3>
+                        <p>Access to cybersecurity experts and community-driven learning</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>About CyberShield</h2>
+                        <p>CyberShield is a cutting-edge cybersecurity training platform designed to educate individuals and organizations about ransomware threats and cybersecurity best practices.</p>
+                        <p>Our platform combines theoretical knowledge with practical, hands-on experience through realistic simulations, making cybersecurity education engaging and effective.</p>
+                        <div class="about-features">
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Industry-leading simulation technology</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Expert-curated educational content</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Real-world threat scenarios</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="security-visualization">
+                            <div class="shield-container">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="threat-indicators">
+                                <div class="threat" style="--delay: 0s"><i class="fas fa-virus"></i></div>
+                                <div class="threat" style="--delay: 1s"><i class="fas fa-bug"></i></div>
+                                <div class="threat" style="--delay: 2s"><i class="fas fa-skull-crossbones"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Get in Touch</h2>
+                    <p>Have questions? We're here to help you on your cybersecurity journey</p>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>support@cybershield.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Address</h4>
+                                <p>123 Security Blvd, Cyber City, CC 12345</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="contact-form">
+                        <div class="form-row">
+                            <input type="text" placeholder="Your Name" required>
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <input type="text" placeholder="Subject" required>
+                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    
+
+
+
+
+
+<!-- Updated Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content security-modal">
+        <div class="modal-header">
+            <div class="auth-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>CyberShield</span>
+            </div>
+            <h2>Secure Login</h2>
+            <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+        </div>
+        <form class="auth-form" onsubmit="handleLogin(event)">
+            <div class="form-group icon-input">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="loginEmail" placeholder="Email Address" required>
+            </div>
+            <div class="form-group icon-input">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <div class="form-options">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="rememberMe">
+                    <span class="checkmark"></span>
+                    Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full auth-submit">
+                <i class="fas fa-unlock-alt"></i>
+                Sign In
+            </button>
+            <div class="auth-divider">
+                <span>Or continue with</span>
+            </div>
+            <div class="social-auth">
+                <button type="button" class="social-btn google">
+                    <i class="fab fa-google"></i>
+                </button>
+                <button type="button" class="social-btn microsoft">
+                    <i class="fab fa-microsoft"></i>
+                </button>
+                <button type="button" class="social-btn github">
+                    <i class="fab fa-github"></i>
+                </button>
+            </div>
+        </form>
+        <div class="auth-switch">
+            <p>Not shielded yet? <a href="#" onclick="switchToRegister()">Create account</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- Updated Register Modal -->
+<div id="registerModal" class="modal">
+    <div class="modal-content security-modal">
+        <div class="modal-header">
+            <div class="auth-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>CyberShield</span>
+            </div>
+            <h2>Create Shielded Account</h2>
+            <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+        </div>
+        <form class="auth-form" onsubmit="handleRegister(event)">
+            <div class="form-group icon-input">
+                <i class="fas fa-user-secret"></i>
+                <input type="text" id="registerName" placeholder="Full Name" required>
+            </div>
+            <div class="form-group icon-input">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="registerEmail" placeholder="Email Address" required>
+            </div>
+            <div class="form-group icon-input">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="registerPassword" placeholder="Create Password" required>
+                <div class="password-strength">
+                    <div class="strength-bar"></div>
+                    <span class="strength-text"></span>
+                </div>
+                <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label for="registerRole">Security Role</label>
+                <div class="select-wrapper">
+                    <i class="fas fa-user-tag"></i>
+                    <select id="registerRole" required>
+                        <option value="">Select your role</option>
+                        <option value="student">Security Student</option>
+                        <option value="professional">Cyber Professional</option>
+                        <option value="manager">Defense Manager</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group terms">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <span class="checkmark"></span>
+                    I agree to the <a href="#">Security Terms</a> and <a href="#">Privacy Shield</a>
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full auth-submit">
+                <i class="fas fa-shield-alt"></i>
+                Activate Account
+            </button>
+        </form>
+        <div class="auth-switch">
+            <p>Already shielded? <a href="#" onclick="switchToLogin()">Login now</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>CyberShield</span>
+                    </div>
+                    <p>Empowering individuals and organizations with cybersecurity knowledge and skills.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#">Training Modules</a></li>
+                        <li><a href="#">Simulations</a></li>
+                        <li><a href="#">Assessments</a></li>
+                        <li><a href="#">Certifications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CyberShield. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+</body>
+</html>
