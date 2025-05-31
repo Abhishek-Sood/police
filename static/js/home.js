@@ -147,3 +147,9 @@ function hideFieldError(input) {
         existingError.remove();
     }
 }
+
+
+
+function showSection(section) {
+    window.location.href = "/" + section;
+}

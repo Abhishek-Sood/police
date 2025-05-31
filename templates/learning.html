@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ransomware Learning - CyberShield</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/learning.css') }}" />
+    
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>CyberShield</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item">Dashboard</a>
+                <a href="#learning" class="nav-item active">Learning</a>
+                <a href="{{ url_for('quiz') }}" class="nav-item">Quiz</a>
+                <a href="{{ url_for('simulation') }}" class="nav-item">Simulation</a>
+                <a href="#progress" class="nav-item">Progress</a>
+            </nav>
+            <div class="user-menu">
+                <div class="user-info">
+                    <!-- <img src="/api/placeholder/40/40" alt="User" class="user-avatar"> -->
+                    <img src="{{ url_for('static', filename='assets/user-avatar.png') }}" alt="User" class="user-avatar">
+                    <span class="user-name" id="userName">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="#profile"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="learning-container">
+        <section id="learning" class="section">
+            <div class="section-header">
+                <h1>Ransomware Awareness Training</h1>
+                <p>Comprehensive education about ransomware threats and prevention</p>
+            </div>
+
+            <!-- Learning Modules -->
+            <div class="learning-modules1">
+                <div class="module-card completed">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>Introduction to Ransomware</h3>
+                            <p>Understanding the basics of ransomware attacks</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 15 minutes</span>
+                        </div>
+                        <div class="module-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="module-content">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>Watch Introduction Video</span>
+                        </div>
+                        <div class="module-description">
+                            <h4>What you'll learn:</h4>
+                            <ul>
+                                <li>What ransomware is and how it works</li>
+                                <li>Common attack vectors and entry points</li>
+                                <li>Real-world examples and case studies</li>
+                                <li>Impact on individuals and organizations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-card active">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>Types of Ransomware</h3>
+                            <p>Exploring different ransomware variants and families</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 20 minutes</span>
+                        </div>
+                        <div class="module-status">
+                            <div class="progress-circle">
+                                <span>60%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-content">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>Continue Watching</span>
+                        </div>
+                        <div class="module-description">
+                            <h4>What you'll learn:</h4>
+                            <ul>
+                                <li>Crypto-ransomware vs. Locker ransomware</li>
+                                <li>Famous ransomware families (WannaCry, Petya, etc.)</li>
+                                <li>Ransomware-as-a-Service (RaaS) model</li>
+                                <li>Evolution of ransomware tactics</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-primary" onclick="resumeModule(2)">Continue Learning</button>
+                    </div>
+                </div>
+
+                <div class="module-card locked">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>Attack Vectors & Entry Points</h3>
+                            <p>How ransomware infiltrates systems and networks</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 25 minutes</span>
+                        </div>
+                        <div class="module-status">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-card locked">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>Prevention & Protection</h3>
+                            <p>Best practices for ransomware prevention</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 30 minutes</span>
+                        </div>
+                        <div class="module-status">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-card locked">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>Incident Response</h3>
+                            <p>What to do when ransomware strikes</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 35 minutes</span>
+                        </div>
+                        <div class="module-status">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- More Learning Content Section -->
+            <div class="learning-modules">
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>Ransomware Lifecycle Explained</h3>
+                            <p>Stages of a ransomware attack from start to finish</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 25 minutes</span>
+                        </div>
+                    </div>
+                    <div class="module-content">
+                        <iframe src="https://www.youtube.com/embed/lIsWpCMBxHQ" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>How to Spot Phishing and Social Engineering</h3>
+                            <p>Recognizing and reacting to common threats</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 20 minutes</span>
+                        </div>
+                    </div>
+                    <div class="module-content">
+                        <iframe src="https://www.youtube.com/embed/lc7scxvKQOo" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="module-info">
+                            <h3>Preventing Ransomware Infections</h3>
+                            <p>Cyber hygiene and proactive defense tips</p>
+                            <span class="module-duration"><i class="fas fa-clock"></i> 30 minutes</span>
+                        </div>
+                    </div>
+                    <div class="module-content">
+                        <iframe src="https://www.youtube.com/embed/eizn9TC68E8" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Government Resources Section -->
+            <div class="additional-resources" style="margin-top: 60px;">
+                <h2>📢 If Ransomware Happens to You</h2>
+                <p>Here are official Indian government resources to help you report and learn more about ransomware and cybercrime:</p>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Cyber Crime Reporting Portal</h3>
+                        <p>Report ransomware and other cybercrime incidents.</p>
+                        <a href="https://cybercrime.gov.in/" target="_blank"><button class="btn btn-outline">Visit cybercrime.gov.in</button></a>
+                    </div>
+                    <div class="resource-card">
+                        <i class="fas fa-book"></i>
+                        <h3>SVPNPA E-Library</h3>
+                        <p>Explore learning resources by the National Police Academy.</p>
+                        <a href="https://elibrary.svpnpa.gov.in/user#/home" target="_blank"><button class="btn btn-outline">Visit SVPNPA Library</button></a>
+                    </div>
+                    <div class="resource-card">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>CyTrain Portal - NCRB</h3>
+                        <p>Access cyber training courses by NCRB.</p>
+                        <a href="https://cytrain.ncrb.gov.in/" target="_blank"><button class="btn btn-outline">Visit CyTrain</button></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Resources -->
+            <div class="additional-resources">
+                <h2>Additional Resources</h2>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <i class="fas fa-file-pdf"></i>
+                        <h3>Ransomware Guide</h3>
+                        <p>Comprehensive PDF guide covering all aspects of ransomware</p>
+                        <a href="https://www.cisa.gov/sites/default/files/2023-01/CISA_MS-ISAC_Ransomware%20Guide_S508C.pdf" 
+                           target="_blank" 
+                           download>
+                            <button class="btn btn-outline">Download PDF</button>
+                        </a>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <i class="fas fa-external-link-alt"></i>
+                        <h3>Latest Threats</h3>
+                        <p>Stay updated with current ransomware threats and trends</p>
+                        <button class="btn btn-outline">View Updates</button>
+                    </div>
+                    <div class="resource-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Community Forum</h3>
+                        <p>Discuss and share experiences with other learners</p>
+                        <button class="btn btn-outline">Join Forum</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+        <div class="back-button">
+            <button onclick="window.location.href='/dashboard'">Back to Dashboard</button>
+        </div> 
+        
+    </div>
+
+    <script src="{{ url_for('static', filename='js/learning.js') }}"></script>
+</body>
+</html>

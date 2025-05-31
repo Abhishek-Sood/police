@@ -17,7 +17,7 @@
             </div>
             <nav class="nav-menu">
                 <a href="#dashboard" class="nav-item active">Dashboard</a>
-                <a href="#learning" class="nav-item">Learning</a>
+                <a href="{{ url_for('learning') }}" class="nav-item">Learning</a>
                 <a href="{{ url_for('quiz') }}" class="nav-item">Quiz</a>
                 <a href="{{ url_for('simulation') }}" class="nav-item">Simulation</a>
                 <a href="#progress" class="nav-item">Progress</a>
@@ -93,7 +93,7 @@
             <div class="quick-actions">
                 <h2>Quick Actions</h2>
                 <div class="action-grid">
-                    <div class="action-card" onclick="showSection('learning')">
+                    <div class="action-card" onclick="window.location.href='/learning'">
                         <i class="fas fa-play-circle"></i>
                         <h3>Continue Learning</h3>
                         <p>Resume your ransomware awareness training</p>
@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            <!-- Recent Activity -->
+            <!-- Recent Activity
             <div class="recent-activity">
                 <h2>Recent Activity</h2>
                 <div class="activity-list">
@@ -146,7 +146,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </section>
 
         <!-- Learning Section -->

@@ -22,9 +22,16 @@ def quiz():
     # Renders templates/quiz.html, which links to quiz.css
     return render_template('quiz.html')
 
+@app.route('/learning')
+def learning():
+    return render_template('learning.html')
+
+
+
 @app.route("/result")
 def result():
     return render_template("result.html")
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

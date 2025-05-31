@@ -265,3 +265,20 @@ function calculateScore() {
 
 // Initialize quiz when page loads
 document.addEventListener('DOMContentLoaded', initQuiz);
+
+document.getElementById('endBtn').addEventListener('click', () => {
+    const confirmEnd = confirm("Are you sure you want to end the quiz early?");
+    if (!confirmEnd) return;
+
+    clearInterval(timerInterval);
+
+    const score = calculateScore(); // Use your existing function
+
+    localStorage.setItem('quizResult', JSON.stringify({
+        score: score,
+        total: questions.length,
+        answers: userAnswers
+    }));
+
+    window.location.href = '/result';
+});
